@@ -1,0 +1,27 @@
+SOBJ=   ../$(PACKSODIR)/mime.$(SOEXT)
+OBJ=	mime.o error.o
+MDLIBS=	maildrop/rfc822/librfc822.a maildrop/rfc2045/librfc2045.a
+CFLAGS+= -I. -Imaildrop/rfc2045 -Imaildrop/rfc822
+
+all:	$(SOBJ)
+
+$(SOBJ): $(OBJ) $(MDLIBS)
+	mkdir -p ../$(PACKSODIR)
+	$(LD) $(ARCH) $(LDSOFLAGS) -o $@ $(OBJ) $(MDLIBS) $(SWISOLIB)
+
+mime.o:	mime.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+error.o: error.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+maildrop/rfc822/librfc822.a:
+	(cd maildrop/rfc822 && $(MAKE))
+maildrop/rfc2045/librfc2045.a:
+	(cd maildrop/rfc2045 && $(MAKE))
+
+clean distclean:
+	(cd maildrop/rfc822 && $(MAKE) $@)
+	(cd maildrop/rfc2045 && $(MAKE) $@)
+
+check::
+install::

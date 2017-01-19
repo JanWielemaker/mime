@@ -1,0 +1,11 @@
+*~
+*.o
+*.so
+*.a
+*.dylib
+*.log
+autom4te.cache
+config.h
+config.status
+Makefile
+buildenv.sh
